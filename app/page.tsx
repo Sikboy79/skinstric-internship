@@ -1,3 +1,6 @@
+"use client";
+
+import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
 import DiagonalLines from "@/app/components/DiagonalLines";
 import DiamondFrame from "@/app/components/DiamondFrame";
@@ -5,8 +8,10 @@ import DiamondButton from "@/app/components/DiamondButton";
 import SideNav from "@/app/components/SideNav";
 
 export default function Home() {
+  const router = useRouter();
+
   return (
-    <main className="relative min-h-screen bg-white overflow-hidden">
+    <main className="relative min-h-screen bg-white overflow-hidden font-roobert">
       <Header />
 
       {/* Geometry */}
@@ -29,7 +34,10 @@ export default function Home() {
 
           {/* MOBILE / TABLET CTA */}
           <div className="mt-8 xl:hidden">
-            <DiamondButton label="ENTER EXPERIENCE" />
+            <DiamondButton
+              label="ENTER EXPERIENCE"
+              onClick={() => router.push("/pages/start")}
+            />
           </div>
         </div>
       </section>
@@ -37,7 +45,11 @@ export default function Home() {
       {/* DESKTOP SIDE NAV */}
       <div className="hidden xl:block">
         <SideNav direction="left" label="DISCOVER A.I." />
-        <SideNav direction="right" label="TAKE TEST" />
+        <SideNav
+          direction="right"
+          label="TAKE TEST"
+          onClick={() => router.push("/pages/start")}
+        />
       </div>
     </main>
   );
