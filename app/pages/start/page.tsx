@@ -1,50 +1,75 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
-import DiagonalLines from "@/app/components/DiagonalLines";
-import { IoIosPlay } from "react-icons/io";
+import DiamondArrowButton from "@/app/components/DiamondButton";
 
 export default function StartTestPage() {
   const [name, setName] = useState("");
-  const [city, setCity] = useState("");
+  const [location, setLocation] = useState("");
   const [delayedName, setDelayedName] = useState("");
-  const [delayedCity, setDelayedCity] = useState("");
-  const [showThankYou, setShowThankYou] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const locationInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDelayedName(name.trim());
-    }, 1000);
+  const submitToServer = async (submitName: string, submitLocation: string) => {
+    try {
+      setIsLoading(true);
+      setHasSubmitted(false);
 
-    return () => clearTimeout(handler);
-  }, [name]);
+      const res = await fetch("/api/skinstric", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: submitName, location: submitLocation }),
+      });
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDelayedCity(city.trim());
-    }, 1000);
+      if (!res.ok) throw new Error("Server API failed");
 
-    return () => clearTimeout(handler);
-  }, [city]);
+      const data = await res.json();
+
+      console.log("Full API Response:", data);
+      console.log(`SUCCESS: Added ${submitName} from ${submitLocation}`);
+
+      sessionStorage.setItem("skinstricData", JSON.stringify(data));
+
+      setHasSubmitted(true);
+    } catch (error) {
+      console.error("API call failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleKeyPressName = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && name.trim()) {
+      const trimmedName = name.trim();
+      setDelayedName(trimmedName);
+      setTimeout(() => {
+        locationInputRef.current?.focus();
+      }, 50);
+    }
+  };
+
+  const handleKeyPressLocation = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && location.trim()) {
+      submitToServer(delayedName, location.trim());
+    }
+  };
 
   const handleNext = () => {
-    if (name.trim() !== "" && city.trim() !== "") {
-      router.push("/pages/analysis"); 
-    }
+    if (hasSubmitted) router.push("/pages/picture");
   };
 
   return (
     <main className="relative min-h-screen bg-white overflow-hidden flex flex-col">
       <Header />
-      <DiagonalLines />
 
       <section className="flex-1 flex flex-col justify-center items-center px-6">
         <div className="text-center space-y-6">
-          {/* Name input */}
-          {delayedName === "" && (
+          {/* NAME INPUT */}
+          {!delayedName && (
             <div>
               <p className="text-sm text-gray-400 mb-2">CLICK TO TYPE</p>
               <input
@@ -52,29 +77,45 @@ export default function StartTestPage() {
                 placeholder="Introduce Yourself"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                onKeyDown={handleKeyPressName}
                 className="border-b-2 border-gray-400 text-4xl md:text-6xl font-light text-gray-700 text-center focus:outline-none focus:border-black w-full max-w-xl placeholder-gray-400"
               />
             </div>
           )}
 
-          {/* City input */}
-          {delayedName !== "" && delayedCity === "" && (
+          {/* LOCATION INPUT */}
+          {delayedName && !isLoading && !hasSubmitted && (
             <div>
-              <p className="text-sm text-gray-400 mb-2">WHERE ARE YOU FROM?</p>
+              <p className="text-sm text-gray-400 mb-2">Where are you from?</p>
               <input
+                ref={locationInputRef}
                 type="text"
                 placeholder="Enter City"
-                value={city}
-                onChange={(e) => {
-                  setCity(e.target.value);
-                  setShowThankYou(true);
-                }}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                onKeyDown={handleKeyPressLocation}
                 className="border-b-2 border-gray-400 text-4xl md:text-6xl font-light text-gray-700 text-center focus:outline-none focus:border-black w-full max-w-xl placeholder-gray-400"
               />
             </div>
           )}
 
-          {showThankYou && (
+          {/* LOADING */}
+          {isLoading && (
+            <p
+              className="
+                text-4xl md:text-5xl font-medium
+                text-transparent bg-clip-text
+                bg-linear-to-r from-gray-300 via-gray-400 to-gray-300
+                bg-size-[200%_100%]
+                animate-pulse
+              "
+            >
+              ... Loading
+            </p>
+          )}
+
+          {/* SUCCESS */}
+          {hasSubmitted && !isLoading && (
             <div className="space-y-4">
               <p className="text-4xl md:text-6xl font-light text-gray-700">
                 Thank you, {delayedName}!
@@ -85,31 +126,25 @@ export default function StartTestPage() {
         </div>
       </section>
 
-      {/* Bottom-left back button */}
-      <div
-        className="absolute bottom-6 left-6 flex items-center cursor-pointer"
-        onClick={() => router.back()}
-      >
-        <div className="w-10 h-10 border border-black rotate-45 flex items-center justify-center mr-2">
-          <IoIosPlay className="rotate-13" />
-        </div>
-        <span className="text-sm font-semibold pl-4">BACK</span>
+      {/* BACK */}
+      <div className="absolute bottom-10 left-6">
+        <DiamondArrowButton
+          direction="left"
+          label="BACK"
+          onClick={() => router.back()}
+        />
       </div>
 
-      {/* Bottom-right PROCEED button */}
-      <div className="absolute bottom-6 right-6">
-        <button
-          onClick={handleNext}
-          disabled={delayedName.trim() === "" || delayedCity.trim() === ""}
-          className={`px-6 py-3 rounded font-semibold ${
-            delayedName.trim() !== "" && delayedCity.trim() !== ""
-              ? "bg-black text-white cursor-pointer"
-              : "bg-gray-300 text-gray-500 cursor-not-allowed"
-          }`}
-        >
-          PROCEED
-        </button>
-      </div>
+      {/* PROCEED */}
+      {hasSubmitted && (
+        <div className="absolute bottom-10 right-6">
+          <DiamondArrowButton
+            direction="right"
+            label="PROCEED"
+            onClick={handleNext}
+          />
+        </div>
+      )}
     </main>
   );
 }
