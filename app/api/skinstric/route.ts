@@ -30,7 +30,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Try parsing JSON; fallback to text if no JSON
     let data: any;
     try {
       data = await response.json();
