@@ -110,7 +110,7 @@ export default function StartTestPage() {
                 animate-pulse
               "
             >
-              ... Loading
+              ... Processing submission
             </p>
           )}
 
