@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google"; // Using Inter as Roobert alternative
 import "./globals.css";
+import { ResultsProvider } from "@/store/ResultsContext";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,7 +23,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} antialiased`}>
+        <ResultsProvider>
         {children}
+        </ResultsProvider>
       </body>
     </html>
   );

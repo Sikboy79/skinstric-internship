@@ -6,6 +6,7 @@ import DiamondArrowButton from "@/app/components/DiamondButton";
 import ImagePreviewBox from "@/app/components/ImagePreview";
 import { useRouter } from "next/navigation";
 import { BsCamera } from "react-icons/bs";
+import { useResults } from "@/store/ResultsContext";
 
 /* MODAL */
 const CameraPermissionModal: React.FC<{
@@ -240,6 +241,7 @@ const PicturePage = () => {
   const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const hasSentRef = useRef(false);
+  const { setData } = useResults();
 
   useEffect(() => {
     if (!capturedPhoto || hasSentRef.current) return;
@@ -248,15 +250,18 @@ const PicturePage = () => {
     const runAnalysis = async () => {
       try {
         setLoading(true);
-        // Send only raw Base64 string (no prefix)
-        const payload = capturedPhoto;
         const res = await fetch("/api/phase-two", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ Image: payload }),
+          body: JSON.stringify({ Image: capturedPhoto }),
         });
+
         const data = await res.json();
         console.log("Phase Two result:", data);
+
+        // Navigate to Results page with data
+        setData(data);
+        router.push("/pages/results");
       } catch (err) {
         console.error("Network error:", err);
       } finally {
