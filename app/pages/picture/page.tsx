@@ -255,12 +255,10 @@ const PicturePage = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ Image: capturedPhoto }),
         });
-
         const data = await res.json();
         console.log("Phase Two result:", data);
 
-        // Navigate to Results page with data
-        setData(data);
+        setData(data.data);
         router.push("/pages/results");
       } catch (err) {
         console.error("Network error:", err);

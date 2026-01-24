@@ -14,46 +14,78 @@ const ResultsPage: React.FC = () => {
     return Object.entries(obj).sort((a, b) => b[1] - a[1])[0][0];
   };
 
+  const topRace = topKey(data?.race);
+  const topAge = topKey(data?.age);
+  const topGender = topKey(data?.gender);
+
+  if (!data) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-white">
+        <p className="text-gray-600 text-xl">Loading results...</p>
+      </main>
+    );
+  }
+  console.log(data)
+
   return (
-    <main className="min-h-screen bg-white flex flex-col items-center">
+    <main className="min-h-screen bg-white flex flex-col">
       <Header />
       <section className="flex flex-col items-center justify-center flex-1 gap-6 mt-8 px-6 relative">
-        <h2 className="text-2xl font-bold mb-2">A.I. ANALYSIS</h2>
-        <p className="text-sm text-center mb-8">
-          A.I. HAS ESTIMATED THE FOLLOWING.
-          <br />
-          FIX ESTIMATED INFORMATION IF NEEDED.
-        </p>
+        <div className="absolute top-12 left-8">
+          <h2 className="text-xl font-bold mb-2 justify-start">
+            A.I. ANALYSIS
+          </h2>
+          <p className="text-md mb-8">
+            A.I. HAS ESTIMATED THE FOLLOWING.
+            <br />
+            FIX ESTIMATED INFORMATION IF NEEDED.
+          </p>
+        </div>
 
         {/* Diamond Grid */}
-        <div className="grid grid-cols-2 gap-0 transform rotate-45">
-          {[
-            {
-              label: "DEMOGRAPHICS",
-              value: `${topKey(data?.age)}, ${topKey(data?.gender)}, ${topKey(data?.race)}`,
-              onClick: () => router.push("/pages/summary"), 
-            },
-            { label: "COSMETIC CONCERNS", value: "N/A" },
-            { label: "SKIN TYPE DETAILS", value: "N/A" },
-            { label: "WEATHER", value: "N/A" },
-          ].map((item) => (
-            <div
-              key={item.label}
-              className="w-40 h-40 bg-gray-100 flex flex-col items-center justify-center text-center font-bold text-black border border-gray-300 p-2 cursor-pointer hover:scale-105 transition"
-              style={{ transform: "rotate(-45deg)" }}
-              onClick={item.onClick}
-            >
-              <span className="mb-2">{item.label}</span>
-              <span className="text-sm font-normal">{item.value}</span>
-            </div>
-          ))}
+        <div className="flex items-center justify-center">
+          <div className="grid grid-cols-2 gap-2 rotate-45 mt-5">
+            {[
+              {
+                label: "DEMOGRAPHICS",
+                enabled: true,
+                onClick: () => router.push("/pages/summary"),
+              },
+              { label: "SKIN TYPE DETAILS", enabled: false },
+              { label: "COSMETIC CONCERNS", enabled: false },
+              { label: "WEATHER", enabled: false },
+            ].map((item) => (
+              <div
+                key={item.label}
+                onClick={item.onClick}
+                className={`
+                  w-50 h-50
+                  flex items-center justify-center
+                  transition-all duration-200
+                  ${
+                    item.enabled
+                      ? "bg-gray-200 hover:bg-gray-300 cursor-pointer hover:scale-105"
+                      : "bg-gray-100 hover:bg-gray-300 cursor-not-allowed"
+                  }
+                `}
+              >
+                {/* Counter-rotate content only */}
+                <div className="-rotate-45 flex flex-col items-center justify-center text-center px-3">
+                  <span className="mb-2 text-xl font-semibold text-black">
+                    {item.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-        <DiamondArrowButton
-          direction="left"
-          label="BACK"
-          onClick={() => router.back()}
-          className="mt-8"
-        />
+        <div className="fixed bottom-6 left-6 z-50">
+          <DiamondArrowButton
+            direction="left"
+            label="BACK"
+            onClick={() => router.back()}
+          />
+        </div>
       </section>
     </main>
   );
