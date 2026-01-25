@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter();
 
   return (
-    <main className="relative min-h-screen bg-white overflow-hidden font-roobert">
+    <main className="relative min-h-screen bg-transparent overflow-hidden font-roobert">
       <Header />
       <DiagonalLines />
       <DiamondFrame />
@@ -39,7 +39,7 @@ export default function Home() {
       </section>
 
       {/* DESKTOP SIDE NAV */}
-      <div className="fixed bottom-64 left-8 hidden xl:flex  items-center gap-6 z-50">
+      <div className="fixed bottom-80 left-8 hidden xl:flex  items-center gap-6 z-50">
         {/* Left diamond button */}
         <DiamondArrowButton
           direction="left"
@@ -48,7 +48,7 @@ export default function Home() {
           // onClick={() => router.push("/pages/discover")}
         />
       </div>
-      <div className="fixed bottom-64 right-8 hidden xl:flex  items-center gap-6 z-50">
+      <div className="fixed bottom-80 right-8 hidden xl:flex  items-center gap-6 z-50">
         {/* Right diamond button */}
         <DiamondArrowButton
           direction="right"

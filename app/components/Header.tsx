@@ -2,7 +2,7 @@
 
 export default function Header() {
   return (
-    <header className="absolute top-0 left-0 w-full px-8 py-6 flex items-center justify-between text-sm tracking-wide z-10">
+    <header className="absolute top-0 left-0 w-full px-8 py-6 flex items-center justify-between text-sm bg-white tracking-wide z-10">
       {/* Left */}
       <div className="flex items-center gap-3">
         <span className="font-semibold">SKINSTRIC</span>
