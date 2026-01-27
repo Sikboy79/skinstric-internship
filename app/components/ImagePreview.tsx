@@ -20,7 +20,6 @@ const ImagePreviewBox: React.FC<ImagePreviewBoxProps> = ({
 
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
-      <p className="font-normal">Preview</p>
       <div className="w-32 h-32 border border-gray-300 rounded flex items-center justify-center">
         {image ? (
           <img

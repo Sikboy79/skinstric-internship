@@ -63,8 +63,9 @@ export default function StartTestPage() {
   return (
     <main className="relative min-h-screen bg-white flex flex-col">
       <Header />
-      <EnterCode />
-
+      <div className="hidden md:block">
+        <EnterCode />
+      </div>
       <section className="flex-1 flex flex-col justify-center items-center px-6">
         <div className="text-center space-y-6 mt-28">
           {/* NAME */}
@@ -118,8 +119,8 @@ export default function StartTestPage() {
           )}
           {/* SUCCESS */}
           {status === "success" && (
-            <div className="flex w-96 h-96 justify-center">
-              <TripleDiamond>
+            <div className="relative flex w-96 h-96 justify-center -top-30">
+              <TripleDiamond size={350} gap={25} padding={60}>
                 <div className="space-y-4">
                   <p className="text-4xl md:text-6xl font-light text-gray-700">
                     Thank you, {name.trim()}!

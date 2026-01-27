@@ -8,6 +8,7 @@ interface TripleDiamondProps {
   color?: string; // base border color
   gap?: number; // spacing between diamonds in px
   padding?: number; // padding inside diamonds
+  mdSize?: number;
 }
 
 const TripleDiamond: React.FC<TripleDiamondProps> = ({
@@ -16,6 +17,7 @@ const TripleDiamond: React.FC<TripleDiamondProps> = ({
   color = "#d1d5db",
   gap = 18,
   padding = 40,
+  mdSize = 300
 }) => {
   const diamonds = [0, 1, 2];
 
