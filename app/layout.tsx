@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google"; // Using Inter as Roobert alternative
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ResultsProvider } from "@/store/ResultsContext";
 
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "700"], // Regular + Bold
-  variable: "--font-roobert", // keep variable name for Tailwind
+  weight: ["400", "700"],
+  variable: "--font-roobert",
   display: "swap",
 });
 
@@ -21,10 +21,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.variable} antialiased`}>
+    <html lang="en" className={inter.variable}>
+      <body className="antialiased">
         <ResultsProvider>
-        {children}
+          {children}
         </ResultsProvider>
       </body>
     </html>

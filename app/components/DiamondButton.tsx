@@ -25,7 +25,7 @@ export default function DiamondArrowButton({
       <span
         className={`
           relative w-10 h-10 border rotate-45 flex items-center justify-center transition
-          ${disabled ? "border-black" : "border-black group-hover:bg-black"}
+          ${disabled ? "border-[#1a1b1c]" : "border-[#1a1b1c] group-hover:bg-[#1a1b1c]"}
         `}
       >
         {/* Normal arrow */}

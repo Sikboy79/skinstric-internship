@@ -10,9 +10,9 @@ export default function Header() {
       </div>
 
       {/* Right */}
-      <button className="border border-black bg-black text-white px-4 py-2 text-xs font-medium hover:bg-white hover:text-black transition">
+      {/* <button className="border border-[#1a1b1c] bg-[#1a1b1c] text-white px-4 py-2 text-xs font-medium hover:bg-white hover:text-[#1a1b1c] transition">
         ENTER CODE
-      </button>
+      </button> */}
     </header>
   );
 }

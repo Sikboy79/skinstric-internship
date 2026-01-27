@@ -1,64 +1,70 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
-const RadialSlider: React.FC = () => {
-  const [percentage, setPercentage] = useState<number>(50);
+interface RadialSliderProps {
+  value: number;
+  onChange?: (value: number) => void;
+  size?: number;
+  strokeWidth?: number;
+}
+
+const RadialSlider: React.FC<RadialSliderProps> = ({
+  value,
+  onChange,
+  size = 300,
+  strokeWidth = 2,
+}) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
-
-  const radius = 110;
-  const strokeWidth = 2;
+  const percentage = Math.round(value * 100);
+  const radius = size / 2 - strokeWidth - 1;
+  const center = size / 2;
   const circumference = 2 * Math.PI * radius;
   const offset = circumference * (1 - percentage / 100);
-
-  const updatePercentageFromEvent = (e: React.MouseEvent | MouseEvent) => {
-    if (!svgRef.current) return;
-
+  const updateFromEvent = (e: React.MouseEvent | MouseEvent) => {
+    if (!svgRef.current || !onChange) return;
     const rect = svgRef.current.getBoundingClientRect();
     const cx = rect.left + rect.width / 2;
     const cy = rect.top + rect.height / 2;
-
     const x = e.clientX - cx;
     const y = e.clientY - cy;
-
     let angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
     if (angle < 0) angle += 360;
 
-    const newPercentage = Math.round((angle / 360) * 100);
-    setPercentage(newPercentage);
+    onChange(Math.min(1, Math.max(0, angle / 360)));
   };
-
   const startDrag = () => {
-    window.addEventListener("mousemove", updatePercentageFromEvent);
+    if (!onChange) return;
+    window.addEventListener("mousemove", updateFromEvent);
     window.addEventListener("mouseup", stopDrag);
   };
-
   const stopDrag = () => {
-    window.removeEventListener("mousemove", updatePercentageFromEvent);
+    window.removeEventListener("mousemove", updateFromEvent);
     window.removeEventListener("mouseup", stopDrag);
   };
 
   return (
-    <div className="flex items-center justify-center">
-      <div
-        className="relative w-200 h-80 cursor-pointer"
-        onMouseDown={startDrag}
-      >
-        <svg ref={svgRef} className="w-full h-full" viewBox="0 0 260 260">
-          {/* Background */}
+    <div className="flex items-center justify-center select-none">
+      <div className="relative cursor-pointer" onMouseDown={startDrag}>
+        <svg
+          ref={svgRef}
+          width={size}
+          height={size}
+          viewBox={`0 0 ${size} ${size}`}
+        >
+          {/* Background Circle */}
           <circle
-            cx="130"
-            cy="130"
+            cx={center}
+            cy={center}
             r={radius}
             stroke="#e5e7eb"
             strokeWidth={strokeWidth}
             fill="none"
           />
-
-          {/* Progress */}
+          {/* Progress Circle */}
           <circle
-            cx="130"
-            cy="130"
+            cx={center}
+            cy={center}
             r={radius}
             stroke="black"
             strokeWidth={strokeWidth}
@@ -66,13 +72,14 @@ const RadialSlider: React.FC = () => {
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"
-            transform="rotate(-90 130 130)"
+            transform={`rotate(-90 ${center} ${center})`}
           />
         </svg>
-
-        {/* Center label */}
+        {/* Center Label */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <span className="text-3xl font-semibold">{percentage}%</span>
+          <span className="text-4xl font-semibold select-none">
+            {percentage}%
+          </span>
         </div>
       </div>
     </div>
