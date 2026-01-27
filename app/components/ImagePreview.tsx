@@ -21,7 +21,7 @@ const ImagePreviewBox: React.FC<ImagePreviewBoxProps> = ({
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       <p className="font-normal">Preview</p>
-      <div className="w-32 h-32 border border-gray-300 rounded flex items-center justify-center bg-gray-50">
+      <div className="w-32 h-32 border border-gray-300 rounded flex items-center justify-center">
         {image ? (
           <img
             src={image}
@@ -29,7 +29,7 @@ const ImagePreviewBox: React.FC<ImagePreviewBoxProps> = ({
             className="max-w-full max-h-full object-contain"
           />
         ) : (
-          <p className="text-gray-400 text-center">No image captured</p>
+          <p className="text-gray-300 text-center">No image captured</p>
         )}
       </div>
     </div>

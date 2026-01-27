@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Header from "@/app/components/Header";
 import DiamondArrowButton from "@/app/components/DiamondButton";
 import { useResults } from "@/store/ResultsContext";
+import TripleDiamond from "@/app/components/TripleDiamond";
+import EnterCode from "@/app/components/EnterCode";
 
 const ResultsPage: React.FC = () => {
   const router = useRouter();
@@ -25,11 +27,12 @@ const ResultsPage: React.FC = () => {
       </main>
     );
   }
-  console.log(data)
+  console.log(data);
 
   return (
     <main className="min-h-screen bg-white flex flex-col">
       <Header />
+      <EnterCode/>
       <section className="flex flex-col items-center justify-center flex-1 gap-6 mt-8 px-6 relative">
         <div className="absolute top-12 left-8">
           <h2 className="text-xl font-bold mb-2 justify-start">
@@ -43,8 +46,16 @@ const ResultsPage: React.FC = () => {
         </div>
 
         {/* Diamond Grid */}
-        <div className="flex items-center justify-center">
-          <div className="grid grid-cols-2 gap-2 rotate-45 mt-5">
+        <div className="relative flex items-center justify-center mt-20">
+          {/* TripleDiamond behind the 2x2 button grid */}
+          <div className="absolute flex items-center justify-center">
+            <TripleDiamond size={400} gap={20} padding={60}>
+              {/* Optional center content if needed */}
+            </TripleDiamond>
+          </div>
+
+          {/* 2x2 Button Grid */}
+          <div className="grid grid-cols-2 gap-2 rotate-45">
             {[
               {
                 label: "DEMOGRAPHICS",
@@ -59,19 +70,19 @@ const ResultsPage: React.FC = () => {
                 key={item.label}
                 onClick={item.onClick}
                 className={`
-                  w-50 h-50
-                  flex items-center justify-center
-                  transition-all duration-200
-                  ${
-                    item.enabled
-                      ? "bg-gray-200 hover:bg-gray-300 cursor-pointer hover:scale-105"
-                      : "bg-gray-100 hover:bg-gray-300 cursor-not-allowed"
-                  }
-                `}
+          w-40 h-40
+          flex items-center justify-center
+          transition-all duration-200
+          ${
+            item.enabled
+              ? "bg-gray-200 hover:bg-gray-300 cursor-pointer hover:scale-105"
+              : "bg-gray-100 hover:bg-gray-300 cursor-not-allowed"
+          }
+        `}
               >
-                {/* Counter-rotate content only */}
+                {/* Counter-rotate text so it's upright */}
                 <div className="-rotate-45 flex flex-col items-center justify-center text-center px-3">
-                  <span className="mb-2 text-xl font-semibold text-black">
+                  <span className="mb-2 text-lg font-semibold text-[#1a1b1c]">
                     {item.label}
                   </span>
                 </div>
@@ -83,6 +94,13 @@ const ResultsPage: React.FC = () => {
           <DiamondArrowButton
             direction="left"
             label="BACK"
+            onClick={() => router.back()}
+          />
+        </div>
+        <div className="fixed bottom-6 right-6 z-50">
+          <DiamondArrowButton
+            direction="right"
+            label="GET SUMMARY"
             onClick={() => router.back()}
           />
         </div>
