@@ -13,7 +13,7 @@ export default function Home() {
   const [hoveringTest, setHoveringTest] = useState(false);
 
   return (
-    <main className="relative min-h-screen bg-transparent overflow-hidden font-roobert">
+    <main className="relative min-h-screen bg-white overflow-hidden font-roobert">
       <Header />
       <EnterCode />
       <DiagonalLines />
