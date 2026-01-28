@@ -12,8 +12,8 @@ const CameraLoading = () => (
         />
       </div>
     </TripleDiamond>
-    <p className="mt-8 text-lg font-semibold">SETTING UP CAMERA ...</p>
-    <div className="mt-4 text-xs text-center flex gap-2">
+    <p className="mt-8  text-lg font-semibold">SETTING UP CAMERA ...</p>
+    <div className="mt-4  text-xs text-center flex gap-2">
       <span>◇ NEUTRAL EXPRESSION</span>
       <span>◇ FRONTAL POSE</span>
       <span>◇ ADEQUATE LIGHTING</span>

@@ -11,7 +11,7 @@ const CameraPermissionModal: React.FC<Props> = ({ isOpen, onAllow, onDeny }) => 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-55">
+    <div className="fixed inset-0 flex items-center justify-center mt-20 z-55">
       <div className="bg-black/40 text-white pt-6 shadow-lg max-w-xs w-full text-center">
         <p className="mb-8 font-semibold">Allow A.I. to access your camera?</p>
         <hr className="border-white/40 border-t mx-4 mb-4" />
