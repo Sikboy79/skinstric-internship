@@ -18,7 +18,7 @@ const CameraPicker: React.FC<{
       <div className="flex flex-col lg:flex-row items-center gap-16 md:gap-10 z-50 -translate-y-16 md:-translate-y-24 lg:-translate-y-28">
         {/* Camera */}
         <div className="scale-90 md:scale-100">
-          <TripleDiamond size={400} gap={20} padding={60}>
+          <TripleDiamond size={300} gap={20} padding={60}>
             <div className="relative flex items-center justify-center w-40 h-40">
               <button
                 onClick={onCameraClick}
@@ -45,7 +45,7 @@ const CameraPicker: React.FC<{
 
         {/* Gallery */}
         <div className="scale-90 md:scale-100">
-          <TripleDiamond size={400} gap={20} padding={60}>
+          <TripleDiamond size={300} gap={20} padding={60}>
             <div className="relative flex items-center justify-center w-40 h-40">
               <input
                 type="file"
