@@ -250,7 +250,7 @@ const SummaryPage: React.FC = () => {
           >
             RESET
           </button>
-          <button className="border w-24 bg-[#1a1b1c] text-white px-3 py-2 text-xs font-medium hover:bg-white hover:text-[#1a1b1c] transition">
+          <button onClick={() => router.back()} className="border w-24 bg-[#1a1b1c] text-white px-3 py-2 text-xs font-medium hover:bg-white hover:text-[#1a1b1c] transition">
             CONFIRM
           </button>
         </div>

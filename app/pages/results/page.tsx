@@ -49,7 +49,7 @@ const ResultsPage: React.FC = () => {
         <div className="relative flex items-center justify-center mt-20 ">
           {/* TripleDiamond behind the 2x2 button grid */}
           <div className="absolute flex items-center justify-center z-55">
-            <TripleDiamond size={400} gap={20} padding={60}>
+            <TripleDiamond size={350} gap={20} padding={60}>
               {/* Optional center content if needed */}
             </TripleDiamond>
           </div>
@@ -70,7 +70,7 @@ const ResultsPage: React.FC = () => {
                 key={item.label}
                 onClick={item.onClick}
                 className={`
-          w-40 h-40
+          w-35 h-35
           flex items-center justify-center
           transition-all duration-200
           ${
