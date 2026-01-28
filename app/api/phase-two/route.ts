@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    let image = body.Image || body.image;
+    const image = body.Image || body.image;
 
     if (!image || typeof image !== "string") {
       return NextResponse.json(

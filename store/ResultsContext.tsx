@@ -1,63 +1,61 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode,
-} from "react";
+import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-interface Data {
+type ResultsData = {
+  race: Record<string, number>;
   age: Record<string, number>;
   gender: Record<string, number>;
-  race: Record<string, number>;
-}
+};
 
 interface ResultsContextType {
-  data: Data | null;
-  setData: (data: Data) => void;
-  clearData: () => void;
+  data: ResultsData | null;
+  setData: React.Dispatch<React.SetStateAction<ResultsData | null>>;
 }
 
 const ResultsContext = createContext<ResultsContextType | undefined>(undefined);
 
-const STORAGE_KEY = "ai_results";
+const STORAGE_KEY = "resultsData";
 
-export const ResultsProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setDataState] = useState<Data | null>(null);
+export const ResultsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [data, setDataState] = useState<ResultsData | null>(null);
+
+  // Load stored data safely after mount
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        setDataState(JSON.parse(stored));
+        const parsed: ResultsData = JSON.parse(stored);
+        setDataState(parsed);
       }
     } catch (err) {
       console.error("Failed to load stored results:", err);
     }
-  }, []);
-  const setData = (newData: Data) => {
-    setDataState(newData);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
-    } catch (err) {
-      console.error("Failed to save results:", err);
-    }
+  }, []); // run once on mount
+
+  const setData: React.Dispatch<React.SetStateAction<ResultsData | null>> = (value) => {
+    setDataState((prev) => {
+      const newData = typeof value === "function" ? value(prev) : value;
+      try {
+        if (newData) localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
+      } catch (err) {
+        console.error("Failed to save results:", err);
+      }
+      return newData;
+    });
   };
-  const clearData = () => {
-    setDataState(null);
-    localStorage.removeItem(STORAGE_KEY);
-  };
+
   return (
-    <ResultsContext.Provider value={{ data, setData, clearData }}>
+    <ResultsContext.Provider value={{ data, setData }}>
       {children}
     </ResultsContext.Provider>
   );
 };
-export const useResults = () => {
+
+export const useResults = (): ResultsContextType => {
   const context = useContext(ResultsContext);
   if (!context) {
-    throw new Error("useResults must be used within ResultsProvider");
+    throw new Error("useResults must be used within a ResultsProvider");
   }
   return context;
 };
