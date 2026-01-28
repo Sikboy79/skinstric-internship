@@ -119,7 +119,7 @@ export default function StartTestPage() {
           )}
           {/* SUCCESS */}
           {status === "success" && (
-            <div className="relative flex w-96 h-96 justify-center -top-30">
+            <div className="relative flex w-96 h-96 justify-center -top-30 z-55">
               <TripleDiamond size={350} gap={25} padding={60}>
                 <div className="space-y-4">
                   <p className="text-4xl md:text-6xl font-light text-gray-700">

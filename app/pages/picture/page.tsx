@@ -6,16 +6,20 @@ import Header from "@/app/components/Header";
 import DiamondArrowButton from "@/app/components/DiamondButton";
 import ImagePreviewBox from "@/app/components/ImagePreview";
 import EnterCode from "@/app/components/EnterCode";
-import { useResults } from "@/store/ResultsContext";
 import CameraCapture from "@/app/components/CameraCapture";
 import TripleDiamond from "@/app/components/TripleDiamond";
+import { useResults } from "@/store/ResultsContext";
+
+type Phase = "capture" | "analyzing" | "transitioning";
 
 const PicturePage: React.FC = () => {
   const router = useRouter();
-  const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const hasSentRef = useRef(false);
   const { setData } = useResults();
+
+  const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>("capture");
+
+  const hasSentRef = useRef(false);
 
   useEffect(() => {
     if (!capturedPhoto || hasSentRef.current) return;
@@ -23,19 +27,26 @@ const PicturePage: React.FC = () => {
 
     const runAnalysis = async () => {
       try {
-        setLoading(true);
+        setPhase("analyzing");
+
         const res = await fetch("/api/phase-two", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ Image: capturedPhoto }),
         });
-        const data = await res.json();
-        setData(data.data);
-        router.push("/pages/results");
+
+        const json = await res.json();
+        setData(json.data);
+
+        // allow animation to finish before routing
+        setPhase("transitioning");
+        setTimeout(() => {
+          router.push("/pages/results");
+        }, 600);
       } catch (err) {
         console.error("Network error:", err);
-      } finally {
-        setLoading(false);
+        setPhase("capture");
+        hasSentRef.current = false;
       }
     };
     runAnalysis();
@@ -70,33 +81,39 @@ const PicturePage: React.FC = () => {
             onClick={() => router.back()}
           />
         </div>
-
-        {/* Loading overlay */}
-        {loading && (
-          <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
-            <TripleDiamond size={400} gap={20} padding={60}>
-              <p className="text-3xl font-semibold text-[#1a1b1c] flex items-center gap-1">
-                ANALYZING PHOTO
-                <span className="flex gap-0.5">
-                  <span className="animate-bounce">.</span>
-                  <span
-                    className="animate-bounce"
-                    style={{ animationDelay: "0.2s" }}
-                  >
-                    .
-                  </span>
-                  <span
-                    className="animate-bounce"
-                    style={{ animationDelay: "0.4s" }}
-                  >
-                    .
-                  </span>
-                </span>
-              </p>
-            </TripleDiamond>
-          </div>
-        )}
       </section>
+      <div
+        className={`
+          fixed inset-0 z-50 flex items-center justify-center bg-white
+          transition-all duration-500 ease-out
+          ${
+            phase === "analyzing" || phase === "transitioning"
+              ? "opacity-100 scale-100"
+              : "opacity-0 scale-95 pointer-events-none"
+          }
+        `}
+      >
+        <TripleDiamond size={400} gap={20} padding={60}>
+          <p className="text-3xl font-semibold text-[#1a1b1c] flex items-center gap-1">
+            ANALYZING PHOTO
+            <span className="flex gap-0.5">
+              <span className="animate-bounce">.</span>
+              <span
+                className="animate-bounce"
+                style={{ animationDelay: "0.2s" }}
+              >
+                .
+              </span>
+              <span
+                className="animate-bounce"
+                style={{ animationDelay: "0.4s" }}
+              >
+                .
+              </span>
+            </span>
+          </p>
+        </TripleDiamond>
+      </div>
     </main>
   );
 };
