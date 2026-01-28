@@ -67,7 +67,7 @@ export default function StartTestPage() {
         <EnterCode />
       </div>
       <section className="flex-1 flex flex-col justify-center items-center px-6">
-        <div className="text-center space-y-6 mt-28">
+        <div className="text-center space-y-6">
           {/* NAME */}
           {status === "name" && (
             <TripleDiamond size={300} gap={20} color="#d1d5db">

@@ -49,8 +49,10 @@ const SummaryPage: React.FC = () => {
   }
 
   // Helper to get top entry
-  const getTop = (obj: Record<string, number>) =>
-    Object.entries(obj).sort((a, b) => b[1] - a[1])[0];
+  const getTop = (obj: Record<string, number>): [string, number] => {
+    const entry = Object.entries(obj).sort((a, b) => b[1] - a[1])[0];
+    return entry ?? ["", 0];
+  };
 
   const [topRace] = getTop(raceData);
   const [topAge] = getTop(ageData);
@@ -58,22 +60,22 @@ const SummaryPage: React.FC = () => {
 
   const activeKey =
     mode === "race"
-      ? selectedRace ?? topRace
+      ? (selectedRace ?? topRace)
       : mode === "age"
-      ? selectedAge ?? topAge
-      : selectedSex ?? topSex;
+        ? (selectedAge ?? topAge)
+        : (selectedSex ?? topSex);
 
   const activeValue =
     mode === "race"
       ? raceData[activeKey]
       : mode === "age"
-      ? ageData[activeKey]
-      : sexData[activeKey];
+        ? ageData[activeKey]
+        : sexData[activeKey];
 
   const redistribute = (
     obj: Record<string, number>,
     active: string,
-    value: number
+    value: number,
   ) => {
     const oldValue = obj[active];
     const delta = value - oldValue;
@@ -87,13 +89,14 @@ const SummaryPage: React.FC = () => {
     };
     const total = Object.values(updated).reduce((a, b) => a + b, 0);
     return Object.fromEntries(
-      Object.entries(updated).map(([k, v]) => [k, v / total])
+      Object.entries(updated).map(([k, v]) => [k, v / total]),
     );
   };
 
   const handleSliderChange = (value: number) => {
     if (mode === "race") setRaceData((p) => redistribute(p, activeKey, value));
-    else if (mode === "age") setAgeData((p) => redistribute(p, activeKey, value));
+    else if (mode === "age")
+      setAgeData((p) => redistribute(p, activeKey, value));
     else setSexData((p) => redistribute(p, activeKey, value));
   };
 
@@ -114,8 +117,8 @@ const SummaryPage: React.FC = () => {
     mode === "race"
       ? setSelectedRace
       : mode === "age"
-      ? setSelectedAge
-      : setSelectedSex;
+        ? setSelectedAge
+        : setSelectedSex;
 
   const topKey = mode === "race" ? topRace : mode === "age" ? topAge : topSex;
 
@@ -125,7 +128,9 @@ const SummaryPage: React.FC = () => {
       <EnterCode />
       <section className="flex flex-col flex-1 px-6 sm:px-10 py-16 lg:py-24 gap-3 select-none text-[#1a1b1c]">
         <h2 className="text-lg sm:text-xl font-semibold">A.I. ANALYSIS</h2>
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal">DEMOGRAPHICS</h1>
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-normal">
+          DEMOGRAPHICS
+        </h1>
         <p className="text-sm sm:text-base">PREDICTED RACE, AGE & SEX</p>
 
         <div className="mt-12 grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8">
@@ -140,12 +145,14 @@ const SummaryPage: React.FC = () => {
               >
                 <span className="text-lg sm:text-xl font-medium capitalize">
                   {m === "race"
-                    ? selectedRace ?? topRace
+                    ? (selectedRace ?? topRace)
                     : m === "age"
-                    ? selectedAge ?? topAge
-                    : selectedSex ?? topSex}
+                      ? (selectedAge ?? topAge)
+                      : (selectedSex ?? topSex)}
                 </span>
-                <span className="text-xs sm:text-sm font-semibold">{m.toUpperCase()}</span>
+                <span className="text-xs sm:text-sm font-semibold">
+                  {m.toUpperCase()}
+                </span>
               </div>
             ))}
           </div>
@@ -156,7 +163,10 @@ const SummaryPage: React.FC = () => {
                 {activeKey}
               </span>
               <div className="flex items-center justify-center">
-                <CircularSlider value={activeValue} onChange={handleSliderChange} />
+                <CircularSlider
+                  value={activeValue}
+                  onChange={handleSliderChange}
+                />
               </div>
             </div>
 
@@ -180,8 +190,8 @@ const SummaryPage: React.FC = () => {
                         isSelected
                           ? "bg-[#1a1b1c] text-white font-bold"
                           : isTop
-                          ? "bg-gray-300 font-semibold"
-                          : "hover:bg-gray-200"
+                            ? "bg-gray-300 font-semibold"
+                            : "hover:bg-gray-200"
                       }`}
                     >
                       <div className="flex items-center gap-2">
@@ -202,7 +212,11 @@ const SummaryPage: React.FC = () => {
         </div>
 
         <div className="fixed bottom-8 left-8 z-50">
-          <DiamondArrowButton direction="left" label="BACK" onClick={() => router.back()} />
+          <DiamondArrowButton
+            direction="left"
+            label="BACK"
+            onClick={() => router.back()}
+          />
         </div>
 
         <div className="flex gap-3 justify-end mt-10">
