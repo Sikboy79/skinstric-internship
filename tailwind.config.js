@@ -7,16 +7,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        roobert: ["var(--font-roobert)"], // variable still used for Tailwind classes
+        roobert: ["var(--font-roobert)"],
       },
-    },
-  },
-  plugins: [],
-};
-
-export default {
-  theme: {
-    extend: {
       keyframes: {
         shimmer: {
           "0%": { backgroundPosition: "-200% 0" },
@@ -31,4 +23,5 @@ export default {
       },
     },
   },
+  plugins: [],
 };
