@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from "react";
 import Header from "@/app/components/Header";
 import { BsCamera } from "react-icons/bs";
+import CameraCapture from "./CameraCapture";
 
 interface Props {
   stream: MediaStream;
@@ -30,6 +31,10 @@ const CameraFullscreen: React.FC<Props> = ({
     videoRef.current.play().catch(console.error);
   }, [stream]);
 
+  const stopStream = () => {
+    stream.getTracks().forEach((track) => track.stop());
+  };
+
   const handleTakePhoto = () => {
     if (!videoRef.current) return;
 
@@ -51,6 +56,16 @@ const CameraFullscreen: React.FC<Props> = ({
     if (videoRef.current) videoRef.current.play().catch(console.error);
   };
 
+  const handleConfirm = () => {
+    stopStream(); // stop camera when photo is confirmed
+    onConfirm();
+  };
+
+  const handleClose = () => {
+    stopStream(); // stop camera when user closes
+    onClose();
+  };
+
   return (
     <div className="fixed inset-0 z-40 bg-black">
       <div className="absolute top-0 inset-x-0 z-50 bg-white">
@@ -64,7 +79,7 @@ const CameraFullscreen: React.FC<Props> = ({
         playsInline
       />
       {!photo && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center z-50">
+        <div className="absolute inset-0 flex flex-col justify-center px-6 text-center z-50">
           <div className="mb-6 text-white">
             <p className="text-lg md:text-xl font-light mb-3">
               TO GET BETTER RESULTS, MAKE SURE TO HAVE:
@@ -99,17 +114,17 @@ const CameraFullscreen: React.FC<Props> = ({
             className="w-full h-full object-cover absolute inset-0"
           />
           <div className="relative flex flex-col items-center gap-4 z-50">
-            <p className="text-white text-lg md:text-xl font-medium">GREAT SHOT!</p>
-            <div className="flex gap-4 md:gap-6 flex-wrap justify-center">
+            <p className="text-white text-lg md:text-4xl font-medium">GREAT SHOT!</p>
+            <div className="flex mt-60 gap-4 md:gap-6 flex-wrap justify-center">
               <button
                 onClick={handleRetake}
-                className="px-6 md:px-8 py-3 bg-white border text-black rounded-md"
+                className="px-6 md:px-8 py-3 bg-white border text-[#1a1b1c] rounded-md"
               >
                 Retake
               </button>
               <button
-                onClick={onConfirm}
-                className="px-6 md:px-8 py-3 bg-black text-white rounded-md"
+                onClick={handleConfirm}
+                className="px-6 md:px-8 py-3 bg-[#1a1b1c] text-white rounded-md"
               >
                 Use this photo
               </button>

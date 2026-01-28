@@ -35,10 +35,10 @@ const ResultsPage: React.FC = () => {
       <EnterCode/>
       <section className="flex flex-col items-center justify-center flex-1 gap-6 mt-8 px-6 relative">
         <div className="absolute top-12 left-8">
-          <h2 className="text-xl font-bold mb-2 justify-start">
+          <h2 className="text-xl font-bold mb-2 justify-start hidden md:block">
             A.I. ANALYSIS
           </h2>
-          <p className="text-md mb-8">
+          <p className="text-md mb-8 ">
             A.I. HAS ESTIMATED THE FOLLOWING.
             <br />
             FIX ESTIMATED INFORMATION IF NEEDED.
@@ -46,7 +46,7 @@ const ResultsPage: React.FC = () => {
         </div>
 
         {/* Diamond Grid */}
-        <div className="relative flex items-center justify-center mt-20">
+        <div className="relative flex items-center justify-center mt-20 ">
           {/* TripleDiamond behind the 2x2 button grid */}
           <div className="absolute flex items-center justify-center">
             <TripleDiamond size={400} gap={20} padding={60}>

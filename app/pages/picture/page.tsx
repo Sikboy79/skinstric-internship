@@ -75,7 +75,7 @@ const PicturePage: React.FC = () => {
         {loading && (
           <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white">
             <TripleDiamond size={400} gap={20} padding={60}>
-              <p className="text-xlg font-semibold text-[#1a1b1c] flex items-center gap-1">
+              <p className="text-3xl font-semibold text-[#1a1b1c] flex items-center gap-1">
                 ANALYZING PHOTO
                 <span className="flex gap-0.5">
                   <span className="animate-bounce">.</span>
