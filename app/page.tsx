@@ -58,16 +58,17 @@ export default function Home() {
       {/* DESKTOP SIDE NAV */}
       <div
         className={`
-        fixed bottom-80 left-8 hidden xl:flex items-center gap-6 z-50
-        transition-all duration-300 ease-out
-        ${hoveringTest ? "opacity-0 -translate-x-4 pointer-events-none" : "opacity-100 translate-x-0"}
-      `}
+    fixed left-8 hidden xl:flex items-center gap-6 z-50
+    top-1/2 -translate-y-1/2
+    transition-all duration-300 ease-out
+    ${hoveringTest ? "opacity-0 -translate-x-4 pointer-events-none" : "opacity-100 translate-x-0"}
+  `}
       >
         <DiamondArrowButton direction="left" label="DISCOVER A.I." disabled />
       </div>
 
-      {/* Right button triggers heading shift */}
-      <div className="fixed bottom-80 right-8 hidden xl:flex items-center gap-6 z-50">
+      {/* Right button */}
+      <div className="fixed right-8 hidden xl:flex items-center gap-6 z-50 top-1/2 -translate-y-1/2">
         <div
           className="flex"
           onMouseEnter={() => setHoveringTest(true)}
