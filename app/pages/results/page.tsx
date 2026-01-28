@@ -34,11 +34,11 @@ const ResultsPage: React.FC = () => {
       <Header />
       <EnterCode/>
       <section className="flex flex-col items-center justify-center flex-1 gap-6 mt-8 px-6 relative">
-        <div className="absolute top-12 left-8">
-          <h2 className="text-xl font-bold mb-2 justify-start hidden md:block">
+        <div className="absolute top-12 left-8 z-60">
+          <h2 className="text-xl font-bold mb-2 justify-start">
             A.I. ANALYSIS
           </h2>
-          <p className="text-md mb-8 ">
+          <p className="text-md mb-8">
             A.I. HAS ESTIMATED THE FOLLOWING.
             <br />
             FIX ESTIMATED INFORMATION IF NEEDED.
