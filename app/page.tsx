@@ -56,7 +56,13 @@ export default function Home() {
       </div>
 
       {/* DESKTOP SIDE NAV */}
-      <div className="fixed bottom-80 left-8 hidden xl:flex items-center gap-6 z-50">
+      <div
+        className={`
+        fixed bottom-80 left-8 hidden xl:flex items-center gap-6 z-50
+        transition-all duration-300 ease-out
+        ${hoveringTest ? "opacity-0 -translate-x-4 pointer-events-none" : "opacity-100 translate-x-0"}
+      `}
+      >
         <DiamondArrowButton direction="left" label="DISCOVER A.I." disabled />
       </div>
 

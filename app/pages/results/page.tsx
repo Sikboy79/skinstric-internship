@@ -48,14 +48,14 @@ const ResultsPage: React.FC = () => {
         {/* Diamond Grid */}
         <div className="relative flex items-center justify-center mt-20 ">
           {/* TripleDiamond behind the 2x2 button grid */}
-          <div className="absolute flex items-center justify-center">
+          <div className="absolute flex items-center justify-center z-55">
             <TripleDiamond size={400} gap={20} padding={60}>
               {/* Optional center content if needed */}
             </TripleDiamond>
           </div>
 
           {/* 2x2 Button Grid */}
-          <div className="grid grid-cols-2 gap-2 rotate-45">
+          <div className="grid grid-cols-2 gap-2 rotate-45 z-60">
             {[
               {
                 label: "DEMOGRAPHICS",

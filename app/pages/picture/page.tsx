@@ -60,12 +60,14 @@ const PicturePage: React.FC = () => {
       </div>
       <section className="flex flex-col flex-1 px-8 py-8 relative gap-6">
         <p className="text-sm font-semibold">TO START ANALYSIS</p>
-        <CameraCapture
-          onCapture={(photo) => {
-            hasSentRef.current = false;
-            setCapturedPhoto(photo);
-          }}
-        />
+        {phase === "capture" && (
+          <CameraCapture
+            onCapture={(photo) => {
+              hasSentRef.current = false;
+              setCapturedPhoto(photo);
+            }}
+          />
+        )}
         <div className="hidden lg:block absolute right-12 top-24">
           <p className="text-xs font-semibold mb-2">Preview</p>
           <ImagePreviewBox
