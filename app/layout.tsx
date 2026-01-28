@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ResultsProvider } from "@/store/ResultsContext";
 
+<body className="font-roobert text-black bg-white"></body>
+
 const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "700"],
